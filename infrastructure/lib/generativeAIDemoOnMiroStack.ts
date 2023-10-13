@@ -226,6 +226,9 @@ export class DeployStack extends Stack {
                             apiGateway
                         ),
                         allowedMethods: aws_cloudfront.AllowedMethods.ALLOW_ALL,
+                        responseHeadersPolicy:
+                        aws_cloudfront.ResponseHeadersPolicy
+                            .CORS_ALLOW_ALL_ORIGINS,
                         cachePolicy: new aws_cloudfront.CachePolicy(
                             this,
                             'CachePolicy',
@@ -253,6 +256,11 @@ export class DeployStack extends Stack {
                 authorizer: authorizer,
             }
         )
+        resourceCreateImageProxy.addCorsPreflight({
+          allowOrigins: ["http://localhost:3000"],
+          allowMethods: aws_apigateway.Cors.ALL_METHODS,
+          allowHeaders: ["Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key"],
+        });
 
         const resourceModifyImageProxy = regionResource.addResource('modify-image-proxy')
         resourceModifyImageProxy.addMethod(
@@ -263,6 +271,11 @@ export class DeployStack extends Stack {
                 authorizer: authorizer,
             }
         )
+        resourceModifyImageProxy.addCorsPreflight({
+          allowOrigins: ["http://localhost:3000"],
+          allowMethods: aws_apigateway.Cors.ALL_METHODS,
+          allowHeaders: ["Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key"],
+        });
 
         const resourceInPaintImageProxy = regionResource.addResource('inpaint-image-proxy')
         resourceInPaintImageProxy.addMethod(
@@ -273,6 +286,11 @@ export class DeployStack extends Stack {
                 authorizer: authorizer,
             }
         )
+        resourceInPaintImageProxy.addCorsPreflight({
+          allowOrigins: ["http://localhost:3000"],
+          allowMethods: aws_apigateway.Cors.ALL_METHODS,
+          allowHeaders: ["Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key"],
+        });
 
         new CfnOutput(this, 'DistributionOutput', {
             exportName: 'DistributionURL',

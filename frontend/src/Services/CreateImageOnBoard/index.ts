@@ -1,7 +1,8 @@
 import { createError } from '../Error'
 //@ts-ignore
 const { board } = window.miro
-const APP_ORIGIN = location.origin
+//const APP_ORIGIN = location.origin
+const APP_ORIGIN = 'https://dwjlt09ft20s2.cloudfront.net'
 
 export const createImageOnBoard = async (
     data: any,

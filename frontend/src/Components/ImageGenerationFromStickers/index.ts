@@ -5,6 +5,7 @@ import {
     createShapeOnBoard,
     removeItemFromBoard,
     findShapeOnBoard,
+    getAppData
 } from '../../Services'
 
 export const imageGenerationFromStickers = async (stickers: any) => {
@@ -37,15 +38,19 @@ export const imageGenerationFromStickers = async (stickers: any) => {
     }
     new_x = new_x / stickers.length
     new_y = new_y / stickers.length
+
+    const appData = await getAppData('bedrock_instance_prompt') || ''
+
     if (prompt.length > 0) {
         const requestData = JSON.stringify({
             action: 'create',
-            prompt: prompt,
+            prompt: prompt + ` ${appData}`,
             negative_prompt: negative_prompt,
             seed: seed,
             width: 512,
             height: 512,
             guidance_scale: 7,
+            style_preset: appData
         })
 
         // create temporary shape on the board

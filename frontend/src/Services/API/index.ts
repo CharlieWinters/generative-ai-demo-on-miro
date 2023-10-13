@@ -24,7 +24,7 @@ export const getCreatedImage = async (requestBody: any) => {
         body: requestBody,
     }
 
-    const response = await fetch(`/api/create-image-proxy`, config)
+    const response = await fetch(`https://dwjlt09ft20s2.cloudfront.net/api/create-image-proxy`, config)
     if (response.status !== 200) {
         console.log('Server data received: ', response)
     }

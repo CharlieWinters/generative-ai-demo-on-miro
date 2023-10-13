@@ -27,7 +27,7 @@ def create_image_from_text(parameters):
             "seed": parameters["seed"],
             "cfg_scale": 5,
             "steps": 70,
-            "style_preset": style_preset,
+            # "style_preset": style_preset,
         })
         response = get_bedrock_response(bedrock_region, bedrock_model_name, request_body)
         new_image = convert_bedrock_response_to_image(response)
@@ -52,7 +52,12 @@ def handler(event, context):
         body = event["body"]
         parameters = json.loads(body)
         full_response_url = create_image_from_text(parameters)
-        return get_response_struct({"status": "ok", "responseURL": full_response_url})  # return structured answer
+        headers = {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        }
+        return get_response_struct({"status": "ok","headers":headers, "responseURL": full_response_url})  # return structured answer
     except Exception as e:
         print("-------- Exception: ", str(e))
         return get_response_struct({"status": "error", "reply": "Error: " + str(e)}, status_code=502)
